@@ -1,0 +1,106 @@
+/* ═══════════════════════════════════════════════════════════
+   DetoxWeb — Extension Styles (styles.css)
+   Injected into every page by the content script.
+   ═══════════════════════════════════════════════════════════ */
+
+/* ─── Wrapper container ──────────────────────────────────── */
+.detoxweb-wrapper {
+  position: relative;
+  display: inline;
+}
+
+/* ─── Blurred state ──────────────────────────────────────── */
+.detoxweb-blurred {
+  filter: blur(6px);
+  transition: filter 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+              background-color 0.35s ease;
+  cursor: pointer;
+  border-radius: 4px;
+  background-color: rgba(239, 68, 68, 0.08); /* very subtle red tint */
+  padding: 0 2px;
+  user-select: none;
+}
+
+/* Hover: lighten the blur slightly to hint that content is there */
+.detoxweb-wrapper:hover .detoxweb-blurred:not(.detoxweb-revealed) {
+  filter: blur(3px);
+  background-color: rgba(239, 68, 68, 0.14);
+}
+
+/* ─── Revealed state ─────────────────────────────────────── */
+.detoxweb-blurred.detoxweb-revealed {
+  filter: blur(0px);
+  background-color: rgba(234, 179, 8, 0.12); /* warm yellow highlight */
+  user-select: text;
+  outline: 1.5px dashed rgba(234, 179, 8, 0.5);
+  border-radius: 4px;
+}
+
+/* ─── Reveal button ──────────────────────────────────────── */
+.detoxweb-reveal-btn {
+  /* Positioning */
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 6px;
+  vertical-align: middle;
+
+  /* Sizing */
+  padding: 1px 8px;
+  font-size: 10px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+               "Helvetica Neue", Arial, sans-serif;
+  font-weight: 600;
+  line-height: 1.6;
+  letter-spacing: 0.02em;
+
+  /* Appearance */
+  color: #f9fafb;
+  background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+  border: none;
+  border-radius: 999px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3),
+              0 0 0 1px rgba(239, 68, 68, 0.4);
+  cursor: pointer;
+  white-space: nowrap;
+  position: relative;
+  z-index: 9999;
+
+  /* Animation */
+  transition: transform 0.15s ease,
+              box-shadow 0.15s ease,
+              background 0.2s ease,
+              opacity 0.2s ease;
+
+  /* Hidden until wrapper is hovered */
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Show button when wrapper is hovered */
+.detoxweb-wrapper:hover .detoxweb-reveal-btn {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Button hover state */
+.detoxweb-reveal-btn:hover {
+  transform: scale(1.06);
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.5),
+              0 0 0 1px rgba(239, 68, 68, 0.6);
+  background: linear-gradient(135deg, #f87171 0%, #ef4444 100%);
+}
+
+/* Button active (click) state */
+.detoxweb-reveal-btn:active {
+  transform: scale(0.96);
+}
+
+/* When content is revealed, style the button as a "Hide" action */
+.detoxweb-blurred.detoxweb-revealed ~ .detoxweb-reveal-btn {
+  background: linear-gradient(135deg, #eab308 0%, #a16207 100%);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3),
+              0 0 0 1px rgba(234, 179, 8, 0.5);
+  opacity: 1;
+  pointer-events: auto;
+}

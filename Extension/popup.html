@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DetoxWeb</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      width: 320px;
+      background: #0c0c10;
+      color: #e5e7eb;
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 13px;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    /* ── Header ── */
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 18px 14px;
+      background: linear-gradient(135deg, #1a0a0a 0%, #0f0f18 100%);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .shield { font-size: 26px; line-height: 1; flex-shrink: 0; }
+    .header-text { flex: 1; min-width: 0; }
+    .app-name {
+      font-size: 16px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #ef4444 20%, #f97316 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.02em;
+    }
+    .site-host {
+      font-size: 11px;
+      color: #6b7280;
+      margin-top: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* ── API status badge ── */
+    .api-badge {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      border: 1px solid;
+      flex-shrink: 0;
+    }
+    .api-badge.online  { color: #4ade80; border-color: rgba(74,222,128,0.3); background: rgba(74,222,128,0.08); }
+    .api-badge.offline { color: #f87171; border-color: rgba(248,113,113,0.3); background: rgba(248,113,113,0.08); }
+    .api-badge.checking { color: #9ca3af; border-color: rgba(156,163,175,0.2); background: transparent; }
+    .status-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+    .api-badge.online .status-dot { animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.35} }
+
+    /* ── Body ── */
+    .body { padding: 14px 18px; display: flex; flex-direction: column; gap: 12px; }
+
+    /* ── Toggle card ── */
+    .toggle-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      cursor: pointer;
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+    .toggle-card:hover { background: rgba(255,255,255,0.07); }
+    .toggle-card.active {
+      border-color: rgba(239,68,68,0.3);
+      background: rgba(239,68,68,0.06);
+    }
+
+    .toggle-label { flex: 1; }
+    .toggle-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #f3f4f6;
+    }
+    .toggle-sub {
+      font-size: 11px;
+      color: #6b7280;
+      margin-top: 3px;
+      line-height: 1.4;
+    }
+    .toggle-card.active .toggle-sub {
+      color: #f87171;
+    }
+
+    /* Pill toggle switch */
+    .pill {
+      position: relative;
+      width: 44px;
+      height: 24px;
+      flex-shrink: 0;
+    }
+    .pill input { opacity: 0; width: 0; height: 0; position: absolute; }
+    .pill-track {
+      position: absolute; inset: 0;
+      background: #1f2937;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: background 0.25s ease;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .pill-track::after {
+      content: '';
+      position: absolute;
+      top: 3px; left: 3px;
+      width: 16px; height: 16px;
+      background: #6b7280;
+      border-radius: 50%;
+      transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), background 0.25s ease;
+    }
+    .pill input:checked + .pill-track {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      border-color: rgba(239,68,68,0.4);
+    }
+    .pill input:checked + .pill-track::after {
+      transform: translateX(20px);
+      background: #fff;
+    }
+
+    /* ── Stats grid ── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .stat-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 10px;
+      padding: 10px 12px;
+      text-align: center;
+      transition: opacity 0.3s ease;
+    }
+    .stat-card.dimmed { opacity: 0.4; }
+    .stat-value {
+      font-size: 22px;
+      font-weight: 700;
+      line-height: 1;
+      color: #f3f4f6;
+      letter-spacing: -0.03em;
+    }
+    .stat-value.toxic { color: #f87171; }
+    .stat-label {
+      font-size: 10px;
+      color: #6b7280;
+      margin-top: 4px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    /* ── Reset button ── */
+    .reset-btn {
+      width: 100%;
+      padding: 9px 14px;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      color: #9ca3af;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    }
+    .reset-btn:hover:not(:disabled) {
+      background: rgba(255,255,255,0.06);
+      color: #e5e7eb;
+      border-color: rgba(255,255,255,0.2);
+    }
+    .reset-btn:disabled { opacity: 0.35; cursor: default; }
+
+    /* ── Footer ── */
+    .footer {
+      padding: 8px 18px 12px;
+      text-align: center;
+      font-size: 10px;
+      color: #374151;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="header">
+    <span class="shield">🛡️</span>
+    <div class="header-text">
+      <div class="app-name">DetoxWeb</div>
+  
+    </div>
+    <div class="api-badge checking" id="api-badge">
+      <div class="status-dot"></div>
+      <span id="api-label">…</span>
+    </div>
+  </div>
+
+  <!-- Body -->
+  <div class="body">
+
+    <!-- Per-site toggle -->
+    <div class="toggle-card" id="toggle-card">
+      <div class="toggle-label">
+        <div class="toggle-title">Toxic Comment Detector</div>
+        <div class="toggle-sub" id="toggle-sub">ON — filtering all websites</div>
+      </div>
+      <label class="pill">
+        <input type="checkbox" id="toggle-input" />
+        <div class="pill-track"></div>
+      </label>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+      <div class="stat-card dimmed" id="card-scanned">
+        <div class="stat-value" id="stat-scanned">0</div>
+        <div class="stat-label">Scanned</div>
+      </div>
+      <div class="stat-card dimmed" id="card-toxic">
+        <div class="stat-value toxic" id="stat-toxic">0</div>
+        <div class="stat-label">Toxic</div>
+      </div>
+    </div>
+
+    <!-- Reset -->
+    <button class="reset-btn" id="reset-btn" disabled>
+      🧹 Clear all blur on this page
+    </button>
+
+  </div>
+
+  <div class="footer">Powered by Jigsaw · Keras · FastAPI</div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
