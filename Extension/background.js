@@ -14,7 +14,7 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 
   // API proxy: content script sends sentences, background fetches /predict
   if (message.type === "API_PREDICT") {
-    fetch("http://127.0.0.1:8000/predict", {
+    fetch("https://uzairdot-detox-web-extension.hf.space/predict", {
       method:  "POST",
       headers: { "Content-Type": "application/json" },
       body:    JSON.stringify({ sentences: message.sentences }),

@@ -10,9 +10,9 @@ COPY requirements.txt .
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of the application code and the model
-COPY Extension/app.py .
-COPY Extension/toxic_comment_model.keras .
+# Copy the application code and the model directly (since they were uploaded to root)
+COPY app.py .
+COPY toxic_comment_model.keras .
 
 # Expose port 7860 (Hugging Face Spaces default port)
 EXPOSE 7860
