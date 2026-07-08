@@ -139,7 +139,6 @@ Since DetoxWeb processes text locally for maximum privacy, it needs the inferenc
 ```bash
 # Clone the repository
 git clone https://github.com/Uzair-Majeed/Detox-Web-Extension.git
-cd Detox-Web-Extension
 
 # Create and activate a virtual environment
 python -m venv venv
@@ -149,6 +148,7 @@ source venv/bin/activate  # On Windows use `venv\Scripts\activate`
 pip install -r requirements.txt
 
 # Start the local API server
+
 uvicorn Extension.app:app --host 127.0.0.1 --port 8000
 ```
 
