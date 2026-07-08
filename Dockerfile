@@ -19,9 +19,16 @@ ENV TF_ENABLE_ONEDNN_OPTS=0
 # Force logs to stream instantly so Hugging Face doesn't hide errors
 ENV PYTHONUNBUFFERED=1
 
-# Copy the application code and the model directly (since they were uploaded to root)
-COPY app.py .
-COPY toxic_comment_model.keras .
+# Hugging Face runs Docker spaces as user 1000. 
+# We need to explicitly create this user and give it permissions, 
+# otherwise Keras might crash silently when it tries to extract the model zip!
+RUN useradd -m -u 1000 user
+RUN chown -R 1000:1000 /app
+USER user
+
+# Copy the application code and the model directly
+COPY --chown=1000:1000 app.py .
+COPY --chown=1000:1000 toxic_comment_model.keras .
 
 # Expose port 7860 (Hugging Face Spaces default port)
 EXPOSE 7860

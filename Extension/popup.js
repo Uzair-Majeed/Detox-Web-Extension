@@ -107,8 +107,16 @@ resetBtn.addEventListener("click", async () => {
 // ─── API Health ───────────────────────────────────────────────────────────────
 async function pingApi() {
   try {
-    const HEALTH_URL = "https://uzairdot-detox-web-extension.hf.space/health";
+    // Dynamically load the 'env' file
+    const envRes = await fetch(chrome.runtime.getURL("env"));
+    const envText = await envRes.text();
+    const env = {};
+    envText.split('\n').forEach(line => {
+      const [key, ...rest] = line.split('=');
+      if (key && rest.length > 0) env[key.trim()] = rest.join('=').trim();
+    });
 
+    const HEALTH_URL = env.ENDPOINT_BASE_URL + "/health";
     const res = await fetch(HEALTH_URL, {
       method: "GET",
       signal: AbortSignal.timeout(2000),

@@ -13,13 +13,25 @@ chrome.runtime.onInstalled.addListener(() => {
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 
   if (message.type === "API_PREDICT") {
-    const API_URL = "https://uzairdot-detox-web-extension.hf.space/predict";
+    // Dynamically load the 'env' file
+    fetch(chrome.runtime.getURL("env"))
+      .then(res => res.text())
+      .then(text => {
+        const env = {};
+        text.split('\n').forEach(line => {
+          const [key, ...rest] = line.split('=');
+          if (key && rest.length > 0) env[key.trim()] = rest.join('=').trim();
+        });
+        
+        // Use ENDPOINT_BASE_URL
+        const API_URL = env.ENDPOINT_BASE_URL + "/predict";
 
-    fetch(API_URL, {
-      method:  "POST",
-      headers: { "Content-Type": "application/json" },
-      body:    JSON.stringify({ sentences: message.sentences }),
-    })
+        return fetch(API_URL, {
+          method:  "POST",
+          headers: { "Content-Type": "application/json" },
+          body:    JSON.stringify({ sentences: message.sentences }),
+        });
+      })
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.json();
