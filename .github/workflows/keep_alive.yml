@@ -1,0 +1,16 @@
+name: Keep Alive Ping
+
+on:
+  schedule:
+    # Ping every 15 minutes to prevent the Hugging Face Free Tier from sleeping
+    - cron: "*/15 * * * *"
+  workflow_dispatch: # Allows you to run this manually from the Actions tab if needed
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Hugging Face Health Endpoint
+        run: |
+          echo "Pinging Hugging Face Space..."
+          curl -f -s https://uzairdot-detox-web-extension.hf.space/health || echo "Ping failed or returned non-200, but keeping action green."
