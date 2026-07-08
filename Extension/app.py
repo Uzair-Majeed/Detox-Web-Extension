@@ -1,14 +1,15 @@
 """
-DetoxWeb — FastAPI Backend v2
+DetoxWeb — FastAPI Backend
 Loads the trained Keras model and exposes a /predict endpoint
 for the Chrome/Firefox Extension to call locally.
 
-v2 additions:
+Features:
 - Server-side LRU sentence cache (OrderedDict, max 10 000 entries).
 - Within-batch deduplication: identical sentences classified once per request.
 """
 
 import os
+
 import logging
 from collections import OrderedDict
 from contextlib import asynccontextmanager

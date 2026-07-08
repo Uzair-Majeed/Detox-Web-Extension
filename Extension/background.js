@@ -13,8 +13,8 @@ chrome.runtime.onInstalled.addListener(() => {
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 
   if (message.type === "API_PREDICT") {
-    // Dynamically load the 'env' file
-    fetch(chrome.runtime.getURL("env"))
+    // Dynamically load the '.env' file
+    fetch(chrome.runtime.getURL(".env"))
       .then(res => res.text())
       .then(text => {
         const env = {};

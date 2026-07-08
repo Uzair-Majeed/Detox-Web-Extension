@@ -1,8 +1,17 @@
+<div align="center">
+  <img src="Extension/icons/icon128.png" alt="DetoxWeb Logo" width="128"/>
+</div>
+
 # 🛡️ DetoxWeb
 
 DetoxWeb is an AI-powered browser extension that dynamically scans web pages in real-time and visually blurs toxic comments. It uses a custom-trained TensorFlow/Keras binary classification model served via a lightweight FastAPI backend.
 
 Built for both **Google Chrome** and **Mozilla Firefox** (Manifest V3), DetoxWeb puts you in control of your browsing experience by hiding harassment, insults, and toxic language before you read it, while allowing you to optionally reveal blurred content.
+
+<div align="center">
+  <img src="Assets/extension_preview2.png" alt="Extension Preview 2" width="45%"/>
+  <img src="Assets/extension_preview.png" alt="Extension Preview 1" width="45%"/>
+</div>
 
 ---
 
@@ -68,6 +77,31 @@ The final model achieved a **~7.7% absolute increase in test accuracy** while si
 
 ---
 
+## 🚶 Walkthrough
+
+Here are some examples of DetoxWeb in action:
+
+<div align="center">
+  <img src="Assets/blurred_text1.png" alt="Blurred Text 1" width="45%"/>
+  <img src="Assets/revealed_text1.png" alt="Revealed Text 1" width="45%"/>
+</div>
+
+<br>
+
+<div align="center">
+  <img src="Assets/blurred_text2.png" alt="Blurred Text 2" width="45%"/>
+  <img src="Assets/revealed_text2.png" alt="Revealed Text 2" width="45%"/>
+</div>
+
+<br>
+
+<div align="center">
+  <img src="Assets/blurred_text3.png" alt="Blurred Text 3" width="45%"/>
+  <img src="Assets/revealed_text3.png" alt="Revealed Text 3" width="45%"/>
+</div>
+
+---
+
 ## 🛠️ Tech Stack
 
 - **Extension:** Manifest V3, Vanilla JavaScript, HTML/CSS.
@@ -81,6 +115,10 @@ The final model achieved a **~7.7% absolute increase in test accuracy** while si
 To use DetoxWeb, you need to add the extension to your browser and run the local AI backend.
 
 ### 1. Add the Extension to Your Browser
+
+<div align="center">
+  <img src="Assets/add-extension.png" alt="Add Extension" width="600"/>
+</div>
 
 **For Google Chrome:**
 1. Open Chrome and navigate to `chrome://extensions/`
@@ -100,15 +138,18 @@ Since DetoxWeb processes text locally for maximum privacy, it needs the inferenc
 
 ```bash
 # Clone the repository
-git clone <your-repo-url>
-cd DetoxWeb
+git clone https://github.com/Uzair-Majeed/Detox-Web-Extension.git
+cd Detox-Web-Extension
 
-# Install Python dependencies
+# Create and activate a virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+
+# Install dependencies
 pip install -r requirements.txt
 
-# Start the FastAPI server
-cd Extension
-uvicorn app:app --host 127.0.0.1 --port 8000 --reload
+# Start the local API server
+uvicorn Extension.app:app --host 127.0.0.1 --port 8000
 ```
 
 ### 3. Start Browsing

@@ -107,8 +107,8 @@ resetBtn.addEventListener("click", async () => {
 // ─── API Health ───────────────────────────────────────────────────────────────
 async function pingApi() {
   try {
-    // Dynamically load the 'env' file
-    const envRes = await fetch(chrome.runtime.getURL("env"));
+    // Dynamically load the '.env' file
+    const envRes = await fetch(chrome.runtime.getURL(".env"));
     const envText = await envRes.text();
     const env = {};
     envText.split('\n').forEach(line => {
