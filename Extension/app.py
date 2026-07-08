@@ -84,11 +84,19 @@ def load_model() -> tf.keras.Model:
             "Ensure toxic_comment_model.keras is in the same directory as app.py."
         )
 
+    # ──────────────────────────────────────────────
+    # Keras 3 Serialization Bug Workaround
+    # Colab saved 'quantization_config' which Dense.__init__ rejects in HF's env.
+    # ──────────────────────────────────────────────
+    original_dense_init = tf.keras.layers.Dense.__init__
+    def patched_dense_init(self, *args, **kwargs):
+        kwargs.pop("quantization_config", None)
+        original_dense_init(self, *args, **kwargs)
+    tf.keras.layers.Dense.__init__ = patched_dense_init
+
     loaded = tf.keras.models.load_model(
         MODEL_PATH,
         custom_objects=None,
-        compile=False,
-        safe_mode=False,
     )
     logger.info("Model loaded. Input shape: %s", loaded.input_shape)
     return loaded

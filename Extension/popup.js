@@ -107,7 +107,9 @@ resetBtn.addEventListener("click", async () => {
 // ─── API Health ───────────────────────────────────────────────────────────────
 async function pingApi() {
   try {
-    const res = await fetch("https://uzairdot-detox-web-extension.hf.space/health", {
+    const HEALTH_URL = "https://uzairdot-detox-web-extension.hf.space/health";
+
+    const res = await fetch(HEALTH_URL, {
       method: "GET",
       signal: AbortSignal.timeout(2000),
     });

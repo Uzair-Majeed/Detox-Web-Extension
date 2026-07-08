@@ -12,9 +12,10 @@ chrome.runtime.onInstalled.addListener(() => {
 // ─── Message Router ───────────────────────────────────────────────────────────
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 
-  // API proxy: content script sends sentences, background fetches /predict
   if (message.type === "API_PREDICT") {
-    fetch("https://uzairdot-detox-web-extension.hf.space/predict", {
+    const API_URL = "https://uzairdot-detox-web-extension.hf.space/predict";
+
+    fetch(API_URL, {
       method:  "POST",
       headers: { "Content-Type": "application/json" },
       body:    JSON.stringify({ sentences: message.sentences }),
